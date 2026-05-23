@@ -86,7 +86,7 @@ a:hover {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile Menu Overlay */
+/* Mobile Menu Overlay — hidden by default, click-blocking disabled when hidden */
 .mobile-menu-overlay {
   display: none;
   position: fixed;
@@ -94,14 +94,17 @@ a:hover {
   background: rgba(0,0,0,0.3);
   z-index: 998;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
 .mobile-menu-overlay.open {
+  display: flex;
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* Mobile Menu Panel */
+/* Mobile Menu Panel — only shown on mobile when .open */
 .mobile-menu-panel {
   display: none;
   position: fixed;
@@ -120,6 +123,7 @@ a:hover {
 }
 
 .mobile-menu-panel.open {
+  display: flex;
   right: 0;
 }
 
@@ -164,7 +168,7 @@ a:hover {
     display: none !important;
   }
   
-  .mobile-menu-overlay,
+  /* Panel keeps display:flex on mobile — off-screen at right:-300px, doesn't block clicks, preserves slide animation */
   .mobile-menu-panel {
     display: flex;
   }
