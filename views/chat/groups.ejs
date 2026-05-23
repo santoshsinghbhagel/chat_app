@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+
+<div class="page-container" style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; animation: fadeIn 0.5s ease;">
+  <div class="page-header" style="text-align: center; margin-bottom: 3.5rem;">
+    <span style="display: inline-block; padding: 0.4rem 1.2rem; background: var(--primary-light); color: var(--primary-dark); border-radius: 99px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; border: 1px solid rgba(34, 197, 94, 0.2);">
+      <i class="fa-solid fa-earth-americas"></i> Public Rooms
+    </span>
+    <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; letter-spacing: -0.02em;">Available Chat Groups</h2>
+    <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 500px; margin: 0 auto;">Select a group below to join the conversation instantly.</p>
+  </div>
+
+  <div class="groups-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+    <% if (groups.length === 0) { %>
+      <div class="empty-state card" style="grid-column: 1 / -1; padding: 5rem 2rem; background: transparent; border: 2px dashed var(--border); box-shadow: none; border-radius: 24px;">
+        <i class="fa-solid fa-folder-open fa-4x" style="color: var(--text-muted); opacity: 0.3; margin-bottom: 1.5rem;"></i>
+        <p style="font-size: 1.3rem; font-weight: 700; color: var(--text);">No groups available right now.</p>
+        <span class="text-muted" style="margin-top: 0.5rem; font-size: 1.05rem;">An admin needs to create one first.</span>
+      </div>
+    <% } else { %>
+      <% groups.forEach(group => { %>
+        <div class="card group-card" style="padding: 2rem; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
+          <div style="display: flex; align-items: flex-start; gap: 1.25rem; margin-bottom: 2rem;">
+            <div class="group-icon" style="width: 55px; height: 55px; border-radius: 16px; background: linear-gradient(135deg, var(--primary-light), #bbf7d0); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; box-shadow: inset 0 -2px 5px rgba(0,0,0,0.05);">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="group-info">
+              <h3 style="margin-bottom: 0.4rem; font-size: 1.3rem; font-weight: 700; color: var(--text);"><%= group.name %></h3>
+              <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><%= group.description || 'No description provided.' %></p>
+            </div>
+          </div>
+          <a href="/chat/join/<%= group.id %>" class="btn btn-full" style="padding: 0.9rem; border-radius: 12px; font-weight: 600; font-size: 1.05rem; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.15);">
+            Join Chat <i class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i>
+          </a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<style>
+  .group-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px -10px rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.4); }
+</style>
+
+<%- include('../partials/footer') %>

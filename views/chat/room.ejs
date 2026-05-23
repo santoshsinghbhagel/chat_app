@@ -1,0 +1,100 @@
+<%- include('../partials/header') %>
+
+<div class="chat-container-wrapper" style="padding: 1.5rem 1rem; max-width: 1000px; margin: 0 auto; height: calc(100vh - 85px);">
+  <div class="chat-container" style="height: 100%; background: var(--surface); border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column;">
+    
+    <!-- Header -->
+    <div class="chat-header" style="padding: 1.25rem 2rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 10;">
+      <div class="chat-title" style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: var(--text); letter-spacing: -0.01em;"><%= group.name %></h3>
+          <div style="display: flex; gap: 0.85rem; align-items: center; margin-top: 0.2rem;">
+            <span class="online-badge" id="online-count" style="font-size: 0.85rem; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
+              <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> <span id="online-num">0</span> online
+            </span>
+            <span class="connection-status text-muted" id="connection-status" style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem; font-weight: 500;">
+              <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> Connecting...
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="badge" style="background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 0.45rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem;">
+          <i class="fa-solid fa-user" style="color: var(--primary); margin-right: 0.25rem;"></i> <%= guestName %>
+        </span>
+        <a href="/chat/groups" class="btn btn-sm btn-outline" onclick="return confirm('Leave this chat room?');" style="border-radius: 99px; border-color: var(--border); color: var(--text-muted) !important; padding: 0.45rem 1rem;">
+          <i class="fa-solid fa-arrow-left"></i> Leave
+        </a>
+      </div>
+    </div>
+
+    <!-- Messages Area -->
+    <div class="chat-messages" id="chat-messages" style="flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg); display: flex; flex-direction: column; gap: 1.25rem; scroll-behavior: smooth;">
+      <div class="loading-indicator" id="loading-indicator" style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin: 1.5rem 0; font-weight: 500;">
+        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem; color: var(--primary);"></i> Loading history...
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typing-indicator" style="display:none; padding: 0.5rem 2rem; background: var(--bg); color: var(--text-muted); font-size: 0.85rem; font-style: italic;">
+      <span class="typing-text" id="typing-text"></span>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chat-input-area" style="padding: 1.25rem 2rem; background: var(--surface); border-top: 1px solid var(--border);">
+      <form id="chat-form" class="chat-form" style="display: flex; gap: 1rem; align-items: flex-end;">
+        <div style="flex: 1; position: relative;">
+          <input type="text" id="message-input" placeholder="Type your message..." autocomplete="off" required maxlength="500" style="width: 100%; padding: 1rem 1.25rem; border-radius: 18px; border: 1.5px solid var(--border); background: var(--bg); font-size: 1.05rem; outline: none; transition: all 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+        </div>
+        <button type="submit" class="btn btn-primary" id="send-btn" style="width: 56px; height: 56px; border-radius: 18px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  #message-input:focus {
+    border-color: var(--primary) !important;
+    background: white !important;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.1) !important;
+  }
+  
+  /* Message Bubbles Customization for Premium feel */
+  .message {
+    max-width: 75% !important;
+    padding: 0.9rem 1.25rem !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03) !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+  }
+  .message.self {
+    border-bottom-right-radius: 4px !important;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    color: white !important;
+  }
+  .message.self .message-time { color: rgba(255,255,255,0.8) !important; }
+  
+  .message.other {
+    border-bottom-left-radius: 4px !important;
+    background: white !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+  }
+  .message-header { font-weight: 700 !important; margin-bottom: 0.25rem !important; }
+</style>
+
+<!-- Hidden inputs for JS to pick up -->
+<input type="hidden" id="groupId" value="<%= group.id %>">
+<input type="hidden" id="guestName" value="<%= guestName %>">
+
+<!-- Load Client Script -->
+<script src="/js/chat.js"></script>
+
+<%- include('../partials/footer') %>

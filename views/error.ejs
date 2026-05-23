@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-icon">
+      <% if (code === 404) { %>
+        <i class="fa-solid fa-map-signs"></i>
+      <% } else { %>
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      <% } %>
+    </div>
+    <div class="error-code"><%= code %></div>
+    <h2><%= message %></h2>
+    <p><%= description %></p>
+    <div class="error-actions">
+      <a href="/" class="btn"><i class="fa-solid fa-house"></i> Go Home</a>
+      <a href="javascript:location.reload()" class="btn btn-outline"><i class="fa-solid fa-rotate"></i> Try Again</a>
+      <a href="javascript:history.back()" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

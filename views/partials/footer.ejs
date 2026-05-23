@@ -1,0 +1,75 @@
+  </main>
+  <footer>
+    <p>&copy; 2026 Santosh Chatting App. All Rights Reserved.</p>
+  </footer>
+
+<!-- Global form handling & network detection -->
+<script>
+// Auto-loading state on all form submissions
+document.addEventListener('submit', function(e) {
+  var form = e.target;
+  var submitBtn = e.submitter || form.querySelector('button[type="submit"]');
+  if (!submitBtn || submitBtn.dataset.noLoading === 'true') return;
+
+  // Only on forms that POST or navigate away
+  if (form.method.toUpperCase() === 'GET' && !form.action.includes('/chat/room/')) return;
+
+  // Don't double-process
+  if (submitBtn.classList.contains('btn-loading')) return;
+
+  // Skip AJAX forms (like the chat form)
+  if (form.id === 'chat-form') return;
+
+  var btnText = submitBtn.textContent.trim() || 'Saving...';
+
+  submitBtn.classList.add('btn-loading');
+  submitBtn.disabled = true;
+  submitBtn.dataset.originalHtml = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<span class="btn-spinner"></span> <span class="btn-text">' + escapeHtml(btnText) + '</span>';
+
+  // Re-enable after timeout (fallback)
+  setTimeout(function() {
+    if (submitBtn.classList.contains('btn-loading')) {
+      submitBtn.classList.remove('btn-loading');
+      submitBtn.disabled = false;
+      if (submitBtn.dataset.originalHtml) {
+        submitBtn.innerHTML = submitBtn.dataset.originalHtml;
+      }
+    }
+  }, 10000);
+});
+
+// Network online/offline detection
+(function() {
+  var banner = document.getElementById('offline-banner');
+  if (!banner) return;
+
+  function updateOnlineStatus() {
+    banner.classList.toggle('visible', !navigator.onLine);
+  }
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
+})();
+
+// Helper: escape HTML for safe injection
+function escapeHtml(text) {
+  if (!text) return '';
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Smooth scroll to flash messages
+(function() {
+  var flash = document.querySelector('.flash-container');
+  if (flash) {
+    setTimeout(function() {
+      flash.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  }
+})();
+</script>
+</body>
+</html>

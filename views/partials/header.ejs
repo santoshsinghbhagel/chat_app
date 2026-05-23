@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Santosh Chat</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<style>
+    /* Premium Navbar */
+    .premium-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.80);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      padding: 0.85rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
+    }
+    .premium-brand a {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .premium-brand-icon {
+      background: linear-gradient(135deg, var(--primary), #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.75rem;
+    }
+    .premium-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .premium-link {
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+    .premium-link:hover {
+      color: var(--primary-dark);
+      background: var(--primary-light);
+    }
+    .premium-link.active {
+      color: var(--primary-dark);
+      background: var(--primary-light);
+    }
+    .premium-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      padding: 0.55rem 1.25rem;
+      border-radius: 99px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      margin-left: 0.5rem;
+    }
+    .premium-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    /* Premium Flash Toasts */
+    .premium-flash-container {
+      position: fixed;
+      top: 85px;
+      right: 30px;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-width: 380px;
+      width: 100%;
+      pointer-events: none; /* Let clicks pass through container */
+    }
+    .premium-flash {
+      pointer-events: auto; /* Re-enable clicks on toast */
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-radius: 14px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15);
+      animation: flashSlideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid transparent;
+    }
+    .premium-flash-success {
+      border-left-color: var(--success);
+    }
+    .premium-flash-success .icon-wrapper {
+      color: var(--success);
+      background: var(--success-light);
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+    }
+    .premium-flash-error {
+      border-left-color: var(--error);
+    }
+    .premium-flash-error .icon-wrapper {
+      color: var(--error);
+      background: var(--error-light);
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+    }
+    @keyframes flashSlideInRight {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes flashFadeOut {
+      to { transform: translateX(120%); opacity: 0; margin-top: -70px; }
+    }
+    .flash-close-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.2rem;
+      transition: color 0.2s;
+      font-size: 1.1rem;
+    }
+    .flash-close-btn:hover { color: var(--text); }
+  </style>
+
+  <nav class="premium-nav">
+    <div class="premium-brand">
+      <a href="/">
+        <i class="fa-solid fa-comments premium-brand-icon"></i> 
+        <span>Santosh Chat</span>
+      </a>
+    </div>
+    <div class="premium-links">
+      <a href="/chat/groups" class="premium-link <%= currentPath && currentPath.startsWith('/chat/') ? 'active' : '' %>">
+        <i class="fa-solid fa-layer-group"></i> Groups
+      </a>
+      <a href="/admin/dashboard" class="premium-btn <%= currentPath && currentPath.startsWith('/admin/') ? 'active' : '' %>">
+        <i class="fa-solid fa-user-shield"></i> Admin Panel
+      </a>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  <% if (flash) { %>
+    <div class="premium-flash-container">
+      <div class="premium-flash premium-flash-<%= flash.type %>" id="flash-toast">
+        <div class="icon-wrapper">
+          <i class="fa-solid <%= flash.type === 'success' ? 'fa-check' : 'fa-triangle-exclamation' %>"></i>
+        </div>
+        <span style="color: var(--text);"><%= flash.message %></span>
+        <button class="flash-close-btn" onclick="closeFlash(this)">&times;</button>
+      </div>
+    </div>
+    <script>
+      // Auto close flash messages after 4 seconds
+      setTimeout(() => {
+        const toast = document.getElementById('flash-toast');
+        if(toast) closeFlash(toast.querySelector('.flash-close-btn'));
+      }, 4000);
+
+      function closeFlash(btn) {
+        const toast = btn.closest('.premium-flash');
+        toast.style.animation = 'flashFadeOut 0.4s ease forwards';
+        setTimeout(() => toast.remove(), 400);
+      }
+    </script>
+  <% } %>
+
+  <!-- Offline Banner -->
+  <div class="offline-banner" id="offline-banner" style="display: none; background: var(--error); color: white; text-align: center; padding: 0.5rem; font-weight: 500; font-size: 0.9rem;">
+    <i class="fa-solid fa-wifi-slash"></i> You are currently offline. Real-time features are paused.
+  </div>
+
+  <main class="container">

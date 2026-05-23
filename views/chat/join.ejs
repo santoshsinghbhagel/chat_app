@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<div class="auth-container" style="min-height: 75vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+  <div class="card form-card text-center" style="max-width: 480px; width: 100%; padding: 3.5rem 3rem; border-radius: 24px; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); background: var(--surface); border: 1px solid rgba(0,0,0,0.05); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -20px; right: -20px; font-size: 10rem; opacity: 0.03; color: var(--primary); transform: rotate(15deg); pointer-events: none;"><i class="fa-solid fa-right-to-bracket"></i></div>
+    
+    <div style="width: 75px; height: 75px; background: linear-gradient(135deg, var(--primary-light), #bbf7d0); color: var(--primary-dark); border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 1.5rem; transform: rotate(-5deg); box-shadow: inset 0 -2px 6px rgba(0,0,0,0.05);">
+      <i class="fa-solid fa-hand-wave" style="transform: rotate(5deg);"></i>
+    </div>
+    
+    <h2 style="font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; letter-spacing: -0.02em;">Join <%= group.name %></h2>
+    <p class="text-muted" style="margin-bottom: 2.5rem; line-height: 1.6; font-size: 1.05rem;"><%= group.description %></p>
+    
+    <form action="/chat/room/<%= group.id %>" method="GET" class="mt-2" style="position: relative; z-index: 2;">
+      <div class="form-group text-left" style="margin-bottom: 2rem;">
+        <label for="name" style="font-weight: 600; color: var(--text); display: block; margin-bottom: 0.5rem; font-size: 0.95rem;">Choose a nickname</label>
+        <input type="text" id="name" name="name" required placeholder="e.g. AwesomeSantosh" style="width: 100%; padding: 1.1rem; border-radius: 14px; border: 2px solid var(--border); background: var(--bg); font-size: 1.05rem; transition: all 0.2s; outline: none;">
+      </div>
+      
+      <button type="submit" class="btn btn-full" style="padding: 1.1rem; font-size: 1.15rem; border-radius: 14px; font-weight: 700; box-shadow: 0 6px 16px rgba(34, 197, 94, 0.25);">
+        <i class="fa-solid fa-right-to-bracket" style="margin-right: 0.5rem;"></i> Enter Chat Room
+      </button>
+    </form>
+    
+    <div style="margin-top: 2rem;">
+      <a href="/chat/groups" style="color: var(--text-muted); font-size: 0.95rem; text-decoration: none; font-weight: 600; transition: color 0.2s;"><i class="fa-solid fa-arrow-left"></i> Back to groups</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #name:focus { border-color: var(--primary) !important; background: white !important; box-shadow: 0 0 0 4px rgba(34,197,94,0.15) !important; }
+</style>
+
+<%- include('../partials/footer') %>
