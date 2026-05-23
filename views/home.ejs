@@ -1,6 +1,31 @@
 <%- include('partials/header') %>
 
 <div class="landing-page" style="display: flex; flex-direction: column; gap: 3.5rem; align-items: center; justify-content: center; min-height: 75vh; padding: 3rem 0; animation: fadeIn 0.6s ease-out;">
+
+<style>
+  @media (max-width: 768px) {
+    .landing-page { gap: 2rem !important; padding: 1.5rem 0 !important; min-height: 60vh !important; }
+    .hero-section h1 { font-size: clamp(2rem, 7vw, 2.8rem) !important; }
+    .hero-section p { font-size: 1rem !important; margin-bottom: 2rem !important; }
+    .action-cards { gap: 1.5rem !important; }
+    .hover-card { padding: 2.5rem 1.5rem !important; }
+    .hover-card h2 { font-size: 1.4rem !important; }
+    .hover-card p { font-size: 0.95rem !important; }
+    .hover-card .btn { font-size: 1rem !important; padding: 0.9rem !important; }
+    .hover-card > div:first-child { width: 64px !important; height: 64px !important; font-size: 2rem !important; margin-bottom: 1.5rem !important; }
+    .stats-bar > div:first-child { font-size: 1.8rem !important; }
+    .stats-bar div:nth-child(2) div:first-child { font-size: 1.5rem !important; }
+    .stats-bar div:nth-child(2) div:last-child { font-size: 0.85rem !important; }
+  }
+  @media (max-width: 480px) {
+    .landing-page { gap: 1.5rem !important; padding: 1rem 0 !important; }
+    .hero-section > div:first-child { font-size: 0.8rem !important; padding: 0.4rem 1rem !important; }
+    .action-cards { padding: 0 0.75rem !important; }
+    .hover-card { padding: 2rem 1.25rem !important; }
+    .hover-card > div:first-child { width: 56px !important; height: 56px !important; font-size: 1.6rem !important; margin-bottom: 1rem !important; }
+    .stats-bar { padding: 1rem 1.5rem !important; gap: 0.75rem !important; }
+  }
+</style>
   
   <!-- Hero Section -->
   <div class="hero-section" style="text-align: center; max-width: 850px; padding: 0 1.5rem;">

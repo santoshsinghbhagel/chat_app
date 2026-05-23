@@ -171,6 +171,14 @@
         <span>Santosh Chat</span>
       </a>
     </div>
+    
+    <!-- Mobile Nav Toggle -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
     <div class="premium-links">
       <a href="/chat/groups" class="premium-link <%= currentPath && currentPath.startsWith('/chat/') ? 'active' : '' %>">
         <i class="fa-solid fa-layer-group"></i> Groups
@@ -180,6 +188,96 @@
       </a>
     </div>
   </nav>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-menu-overlay" id="mobile-overlay"></div>
+  
+  <!-- Mobile Menu Panel -->
+  <div class="mobile-menu-panel" id="mobile-panel">
+    <div class="mobile-menu-link" style="cursor: default; background: var(--primary-light); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.5rem;">
+      <i class="fa-solid fa-comments" style="font-size: 1.3rem; color: var(--primary);"></i>
+      <div>
+        <div style="font-weight: 700; color: var(--text); font-size: 1.1rem;">Santosh Chat</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Real-time messaging</div>
+      </div>
+    </div>
+    
+    <div class="mobile-menu-divider"></div>
+    
+    <a href="/" class="mobile-menu-link <%= currentPath === '/' ? 'active' : '' %>">
+      <i class="fa-solid fa-house"></i> Home
+    </a>
+    
+    <a href="/chat/groups" class="mobile-menu-link <%= currentPath && currentPath.startsWith('/chat/') ? 'active' : '' %>">
+      <i class="fa-solid fa-layer-group"></i> Browse Groups
+    </a>
+    
+    <div class="mobile-menu-divider"></div>
+    
+    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0.5rem 0.25rem;">Administration</div>
+    
+    <a href="/admin/dashboard" class="mobile-menu-link <%= currentPath && currentPath.startsWith('/admin/') ? 'active' : '' %>">
+      <i class="fa-solid fa-user-shield"></i> Admin Dashboard
+    </a>
+    
+    <a href="/admin/login" class="mobile-menu-link">
+      <i class="fa-solid fa-right-to-bracket"></i> Admin Login
+    </a>
+  </div>
+  
+  <script>
+    // Mobile nav toggle
+    (function() {
+      var toggle = document.getElementById('nav-toggle');
+      var overlay = document.getElementById('mobile-overlay');
+      var panel = document.getElementById('mobile-panel');
+      
+      if (!toggle || !overlay || !panel) return;
+      
+      function openMenu() {
+        toggle.classList.add('active');
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeMenu() {
+        toggle.classList.remove('active');
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      
+      toggle.addEventListener('click', function() {
+        if (panel.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+      
+      overlay.addEventListener('click', closeMenu);
+      
+      // Close menu on link click
+      panel.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', closeMenu);
+      });
+      
+      // Close on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && panel.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768 && panel.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
 
   <!-- Flash Messages -->
   <% if (flash) { %>

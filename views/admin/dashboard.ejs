@@ -13,7 +13,14 @@
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+  <style>
+  @media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+    .sidebar .card { position: static !important; }
+    .create-group-card h3 { font-size: 1.1rem !important; }
+  }
+</style>
+<div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
     <!-- Create Group Sidebar -->
     <div class="sidebar">
       <div class="card create-group-card" style="position: sticky; top: 100px;">
